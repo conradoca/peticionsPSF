@@ -64,5 +64,3 @@ for row in signatures:
             update_word_document(baseDOCX, wordDoc, row)
             pdfDoc = f'{params["carpetaPDFs"]}\{os.path.splitext(os.path.basename(wordDoc))[0]}.pdf'
             saveDocX_as_PDF(wordDoc, pdfDoc)
-
-

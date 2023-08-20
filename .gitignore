@@ -9,8 +9,8 @@ Temp/
 
 # Ignore all CSV files
 *.csv
-
 config.json
+
 # But do not ignore these specific CSV files
 !dades_personals-template.csv
 !peticions-template.csv

@@ -1,0 +1,15 @@
+# Folders
+__pycache__/
+PDFs/
+DOCXs/
+PDFRebuts/
+Peticions/
+Signatures/
+Temp/
+
+# Ignore all CSV files
+*.csv
+
+# But do not ignore these specific CSV files
+!dades_personals-template.csv
+!peticions-template.csv

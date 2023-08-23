@@ -98,10 +98,12 @@ def creaPeticio(peticio, dades, driver):
     select_element_prov = wait.until(EC.presence_of_element_located((By.XPATH, '//select[@aria-label="Província"]')))
     dropdown_prov = Select(select_element_prov)
     dropdown_prov.select_by_visible_text(dades["Provincia"])
+    time.sleep(1)
 
     select_element_comarca = wait.until(EC.presence_of_element_located((By.XPATH, '//select[@aria-label="Comarca"]')))
     dropdown_comarca = Select(select_element_comarca)
     dropdown_comarca.select_by_visible_text(dades["Comarca"])
+    time.sleep(1)
 
     select_element_municipi = wait.until(EC.presence_of_element_located((By.XPATH, '//select[@aria-label="Municipi"]')))
     select_element_municipi.send_keys(dades["Municipi"])
@@ -135,12 +137,14 @@ def creaPeticio(peticio, dades, driver):
     # Dades del sol.licitant
     select_element_prov = driver.find_elements(By.XPATH, '//select[@aria-label="Província"]')
     select_element_prov[2].send_keys(dades["Provincia"])
+    time.sleep(1)
 	
     select_element = driver.find_elements(By.XPATH, '//select[@aria-label="Tipus de via"]')
     select_element[2].send_keys(dades["TipusDeVia"])
 
     select_element_comarca = driver.find_elements(By.XPATH, '//select[@aria-label="Comarca"]')
     select_element_comarca[2].send_keys(dades["Comarca"])
+    time.sleep(1)
 
     nomBox = driver.find_elements(By.XPATH, '//input[@aria-label="Nom de la via"]')
     nomBox[2].send_keys(dades["NomDeLaVia"])
@@ -174,7 +178,7 @@ def creaPeticio(peticio, dades, driver):
 
     # Cambia el nom de l'arxiu descarregat
     downloaded_file_path = os.path.join(params["carpetaPDFRebuts"], "Acusament_rebuda.pdf")
-    time.sleep(10) #Dona temps de baixar l'arxiu
+    time.sleep(7) #Dona temps de baixar l'arxiu
     if os.path.exists(downloaded_file_path):
         new_file_path = os.path.join(download_dir, pathPDFRebutName)
         os.rename(downloaded_file_path, new_file_path)
@@ -204,7 +208,7 @@ driver.maximize_window()
 # Open the website
 driver.get(params["webTramits"])
 
-wait = WebDriverWait(driver, timeout=10)
+wait = WebDriverWait(driver, timeout=20)
 
 # Accepta pop-ups cookies
 cookies_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.cookieConsent__Button')))
@@ -215,9 +219,10 @@ cookies_accept_button.click()
 
 for signatura in signatures:
     for peticio in peticions:
-        if signatura['Peticio'] != "Y":
-            creaPeticio(peticio, signatura, driver)
-            input("Vols continuar? Prem Enter per continuar...")
+        if peticio['Activar'] == "Y":
+            if signatura['Peticio'] != "Y":
+                creaPeticio(peticio, signatura, driver)
+                input("Vols continuar? Prem Enter per continuar...")
 
 driver.quit()
         

@@ -32,7 +32,25 @@ def creaPeticio(peticio, dades, driver):
 
     pathPDFRebutName = f"{codi}-{psf}-Acusament_rebuda.pdf"
 
+    # Open the website
     driver.get(params["webTramits"])
+
+    wait = WebDriverWait(driver, timeout=5)
+
+    try:
+        # Accepta pop-ups cookies
+        cookies_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.cookieConsent__Button')))
+        cookies_button.click()
+
+        cookies_accept_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.cookieConsent__Button.cookieConsent__Button--Close')))
+        cookies_accept_button.click()
+
+    except:
+        pass
+
+    wait = WebDriverWait(driver, timeout=20)
+
+    #driver.get(params["webTramits"])
 
     # Step 1
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.step-link.openstep"))).click()
@@ -191,38 +209,33 @@ def creaPeticio(peticio, dades, driver):
 peticions = read_csv_to_list(params["csvPeticions"])
 signatures = read_csv_to_list(params["csvSignatures"])
 
-# carpeta per descarregar els rebuts
-download_dir = params["carpetaPDFRebuts"]
+resPeticions = any(peticio.get("Activar") == "Y" for peticio in peticions)
+resSignatures = any(signatura.get("Peticio") != "Y" for signatura in signatures)
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_experimental_option('prefs', {
-    "download.default_directory": download_dir,
-    "download.prompt_for_download": False,   # To auto download the file
-    "download.directory_upgrade": True,
-    "plugins.always_open_pdf_externally": True  # It will not show PDF directly in chrome
-})
+if resPeticions and resSignatures:
+    # carpeta per descarregar els rebuts
+    download_dir = params["carpetaPDFRebuts"]
 
-driver = webdriver.Chrome(options=chrome_options)
-driver.maximize_window()
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_experimental_option('prefs', {
+        "download.default_directory": download_dir,
+        "download.prompt_for_download": False,   # To auto download the file
+        "download.directory_upgrade": True,
+        "plugins.always_open_pdf_externally": True  # It will not show PDF directly in chrome
+    })
 
-# Open the website
-driver.get(params["webTramits"])
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.maximize_window()
 
-wait = WebDriverWait(driver, timeout=20)
+    for signatura in signatures:
+        for peticio in peticions:
+            if peticio['Activar'] == "Y":
+                if signatura['Peticio'] != "Y":
+                    creaPeticio(peticio, signatura, driver)
+                    input("Vols continuar? Prem Enter per continuar...")
 
-# Accepta pop-ups cookies
-cookies_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.cookieConsent__Button')))
-cookies_button.click()
-
-cookies_accept_button = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.cookieConsent__Button.cookieConsent__Button--Close')))
-cookies_accept_button.click()
-
-for signatura in signatures:
-    for peticio in peticions:
-        if peticio['Activar'] == "Y":
-            if signatura['Peticio'] != "Y":
-                creaPeticio(peticio, signatura, driver)
-                input("Vols continuar? Prem Enter per continuar...")
-
-driver.quit()
+    driver.quit()
+else:
+    if not resPeticions: print("No hi ha cap petició activa!")
+    if not resSignatures: print("No hi ha signatura per crear una petició!")
         

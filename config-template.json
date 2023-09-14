@@ -1,10 +1,10 @@
 {
- "carpetaSignatures": "C:\\Pippiware\\Signatures",
- "carpetaDocumentsPeticions": "C:\\Pippiware\\Peticions",
- "csvPeticions": "C:\\Pippiware\\peticions.csv",
- "csvSignatures": "C:\\Pippiware\\dades_personals_familia.csv",
- "carpetaPDFs": "C:\\Pippiware\\PDFs",
- "carpetaDOCXs": "C:\\Pippiware\\DOCXs",
- "carpetaPDFRebuts": "C:\\Pippiware\\PDFRebuts",
+"csvPeticions": "peticions.csv",
+"csvSignatures": "dades_personals.csv",
+"carpetaSignatures": "Signatures",
+ "carpetaDocumentsPeticions": "Peticions",
+ "carpetaPDFs": "PDFs",
+ "carpetaDOCXs": "DOCXs",
+ "carpetaPDFRebuts": "PDFRebuts",
  "webTramits": "https://web.gencat.cat/ca/tramits/tramits-temes/Peticio-generica"
 }

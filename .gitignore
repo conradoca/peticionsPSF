@@ -6,6 +6,7 @@ PDFRebuts/
 Peticions/
 Signatures/
 Temp/
+build/
 
 # Ignore all CSV files
 *.csv

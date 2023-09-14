@@ -215,6 +215,7 @@ resSignatures = any(signatura.get("Peticio") != "Y" for signatura in signatures)
 if resPeticions and resSignatures:
     # carpeta per descarregar els rebuts
     download_dir = params["carpetaPDFRebuts"]
+    os.makedirs({params["carpetaPDFRebuts"]}, exist_ok=True)
 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('prefs', {

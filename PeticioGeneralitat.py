@@ -182,7 +182,8 @@ def creaPeticio(peticio, dades, driver):
     select_element_municipi = driver.find_elements(By.XPATH, '//select[@aria-label="Municipi"]')
     select_element_municipi[2].send_keys(dades["Municipi"])
 
-    checkbox_element = wait.until(EC.presence_of_element_located((By.XPATH, '//input[@type="checkbox" and @aria-label="He llegit i accepto la informació bàsica sobre protecció de dades"]')))
+    # checkbox_element = wait.until(EC.presence_of_element_located((By.XPATH, '//input[@type="checkbox" and @aria-label="He llegit i accepto la informació bàsica sobre protecció de dades"]')))
+    checkbox_element = wait.until(EC.presence_of_element_located((By.XPATH, '//div[contains(@class, "GDPR")]/div/input[@type="checkbox"]')))
     checkbox_element.click()
 
     input("Please take your manual action and then press Enter to continue...")
@@ -196,7 +197,7 @@ def creaPeticio(peticio, dades, driver):
 
     # Cambia el nom de l'arxiu descarregat
     downloaded_file_path = os.path.join(params["carpetaPDFRebuts"], "Acusament_rebuda.pdf")
-    time.sleep(7) #Dona temps de baixar l'arxiu
+    time.sleep(10) #Dona temps de baixar l'arxiu
     if os.path.exists(downloaded_file_path):
         new_file_path = os.path.join(download_dir, pathPDFRebutName)
         os.rename(downloaded_file_path, new_file_path)
@@ -215,7 +216,7 @@ resSignatures = any(signatura.get("Peticio") != "Y" for signatura in signatures)
 if resPeticions and resSignatures:
     # carpeta per descarregar els rebuts
     download_dir = params["carpetaPDFRebuts"]
-    os.makedirs({params["carpetaPDFRebuts"]}, exist_ok=True)
+    os.makedirs(params["carpetaPDFRebuts"], exist_ok=True)
 
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option('prefs', {

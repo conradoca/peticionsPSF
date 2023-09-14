@@ -54,11 +54,11 @@ def saveDocX_as_PDF(input_file, output_file):
 peticions = read_csv_to_list(params["csvPeticions"])
 signatures = read_csv_to_list(params["csvSignatures"])
 
-os.makedirs({params["carpetaPDFs"]}, exist_ok=True)
+os.makedirs(params["carpetaPDFs"], exist_ok=True)
 
 for row in signatures:
     for psf in peticions:
-        if row['PDF'] != "Y":
+        if psf['Activar']=="Y" and row['PDF'] != "Y":
             codi = row['Codi']
             document = psf["Document"]
             baseDOCX = f'{params["carpetaDocumentsPeticions"]}\{document}'
